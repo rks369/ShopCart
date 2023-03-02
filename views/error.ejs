@@ -1,0 +1,11 @@
+<%- include('partials/head.ejs') %>
+    <%- include('partials/header.ejs',{name:null}) %>
+        <div class="card col-sm-4 m-auto" >
+            <img src="error.png" height="500px" width="300px" class="card-img-top" alt="Error Image">
+            <div class="card-body">
+                <h5 class="card-title">Page Not Found</h5>
+                <p class="card-text">Something went wrong</p>
+                <a href="/" class="btn btn-primary">Re-Try</a>
+            </div>
+        </div>
+        <%- include('partials/tail.ejs') %>

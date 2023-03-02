@@ -1,0 +1,32 @@
+
+
+<nav>
+  <a class="heading" href="./">🛒ShopCart Seller</a>
+  <% if(name==null){ %>
+    <ul>
+
+      <a class="nav_item " href="/">User Login</a>
+
+      <a class="nav_item " href="./login">Login</a>
+
+      <a class="nav_item" href="./signup">Sign Up</a>
+
+
+    </ul>
+
+    <% }else{ %>
+
+      <ul>
+
+        <a class="nav_item " href="/">
+          <%= name %>
+        </a>
+
+      
+
+        <a class="nav_item" href="/changePassword"> Change Password </a>
+        <a class="nav_item" href="/logout">Logout</a>
+
+      </ul>
+      <% } %>
+</nav>

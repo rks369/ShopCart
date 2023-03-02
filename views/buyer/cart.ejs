@@ -1,0 +1,26 @@
+<%- include('../partials/head.ejs') %>
+    <%- include('../partials/header.ejs',{name:name}) %>
+
+        <div class="cartBox">
+
+            <div id="cart_items">
+
+            </div>
+            <div id="oderdetails">
+                <p class="heading">Order Datails</p>
+
+                <span class="heading">Total Amount : </span>
+
+                <sapn class="product_price" style="display: contents;" id="total_amount"></sapn>
+                <span class="heading">Billing Addres</span>
+
+                <textarea class="form-control" name="address" id="billing_address" cols="10" rows="3"></textarea>
+                <br>
+
+                <a class="primaryButton" onclick="">Oder Now</a>
+            </div>
+        </div>
+
+
+        <script src="cart.js"></script>
+        <%- include('../partials/tail.ejs') %>

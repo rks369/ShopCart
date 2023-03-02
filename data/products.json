@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1676442459897,
+    "name": "Iphone",
+    "description": "Apple",
+    "price": "123",
+    "stock": "123",
+    "image": "b2884c9a8e2f3ef819b49b3ac40cf26b"
+  },
+
+  {
+    "id": 1676443994599,
+    "name": "P",
+    "description": "dsf",
+    "price": "12213",
+    "stock": "12312",
+    "image": "0fc78d74384a2eeb7085cf1058b26612"
+  }
+]
