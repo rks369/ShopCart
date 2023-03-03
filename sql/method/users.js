@@ -109,9 +109,9 @@ usersMethods = {
     }
   },
 
-  orderProduct: async (user_id, billing_address, callback) => {
+  orderProduct: async (user_id,cart_id_list, billing_address, callback) => {
     try{
-     const result= await sql.executeTransaction('SELECT * FROM cart')
+     const result= await sql.executeTransaction(user_id,cart_id_list, billing_address)
       callback({data:result})
     }catch(err)
     {

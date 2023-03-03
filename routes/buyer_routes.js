@@ -193,11 +193,13 @@ router.route("/decreaseQuantity").post((req, res) => {
 
 router.route("/order").post((req, res) => {
   console.log(req.body)
-  const user_id =1
+  const user_id =req.session.uid;
   const billing_address = req.body.address;
+  const cart_id_list = req.body.cart_id_list;
 
   dataSource.user.orderProduct(
     user_id,
+    cart_id_list,
     billing_address,
     (msg) => {
       res.json(msg);

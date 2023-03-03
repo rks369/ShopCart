@@ -46,14 +46,14 @@ function createProductItem(productItem)
   productUI.classList.add("product_card");
 
   productUI.innerHTML = `
-    <img src=${product.image} class="product_img" alt="...">
+    <img src=${productItem.image} class="product_img" alt="...">
     <div>
-    <h5 class="product_title">${product.title}</h5>
-    <span class="product_price">Rs.${product.price}/-</span>
+    <h5 class="product_title">${productItem.title}</h5>
+    <span class="product_price">Rs.${productItem.price}/-</span>
     </div>
     <div>
-      <button class="secondaryButton"  onclick="addToCart(${product.pid})"  id=${product.pid}>Add To Cart</button>
-      <button class="primaryButton"  onclick="viewMore(${product.pid})"  id=${product.pid}>View More</button>
+      <button class="secondaryButton"  onclick="addToCart(${productItem.pid})"  id=${productItem.pid}>Add To Cart</button>
+      <button class="primaryButton"  onclick="viewMore(${productItem.pid})"  id=${productItem.pid}>View More</button>
     </div>
     <br>`;
   items.appendChild(productUI);

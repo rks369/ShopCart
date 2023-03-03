@@ -1,8 +1,10 @@
 const cart_items = document.getElementById("cart_items");
 const total_amount_tag = document.getElementById("total_amount");
 const billing_address = document.getElementById("billing_address");
-let total_amount = 0;
+const Order_now = document.getElementById('Order_now');
 
+let total_amount = 0;
+let cart_id_list=[];
 getCartList();
 function getCartList() {
   fetch("cartItems", { method: "GET" })
@@ -12,11 +14,31 @@ function getCartList() {
         cart_items.innerHTML = result["err"];
       } else {
         result["data"].forEach((cartItem) => {
+          cart_id_list.push(cartItem.cid);
           createCartItem(cartItem);
         });
       }
     });
 }
+
+Order_now.addEventListener('click',()=>{
+  let reqObj={
+    cart_id_list:cart_id_list,
+    address:{ address: billing_address.value.trim() }
+  }
+  console.log(reqObj);
+  fetch("/order", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify(reqObj),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log(result);
+    });
+})
 
 function createCartItem(cartItem) {
   total_amount += cartItem.quantity * cartItem.price;
@@ -160,15 +182,21 @@ function createCartItem(cartItem) {
   div2.appendChild(buyNow);
 
   buyNow.addEventListener("click", () => {
+    let reqObj={
+      cart_id_list:[cartItem.cid],
+      address:{ address: billing_address.value.trim() }
+    }
+    console.log(reqObj);
     fetch("/order", {
       method: "POST",
       headers: {
         "Content-type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify({ address: billing_address.value.trim() }),
+      body: JSON.stringify(reqObj),
     })
       .then((response) => response.json())
       .then((result) => {
+        if(result[''])
         console.log(result);
       });
   });
