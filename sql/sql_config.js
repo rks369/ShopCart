@@ -143,7 +143,7 @@ const sqlMethods = {
                   if (err) {
                     reject(err);
                   } else {
-                    resolve({ msg: "Sucess" });
+                    resolve({ msg: "Success" });
                   }
                 });
               } catch (err) {

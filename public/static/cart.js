@@ -1,10 +1,10 @@
 const cart_items = document.getElementById("cart_items");
 const total_amount_tag = document.getElementById("total_amount");
 const billing_address = document.getElementById("billing_address");
-const Order_now = document.getElementById('Order_now');
+const Order_now = document.getElementById("Order_now");
 
 let total_amount = 0;
-let cart_id_list=[];
+let cart_id_list = [];
 getCartList();
 function getCartList() {
   fetch("cartItems", { method: "GET" })
@@ -21,26 +21,37 @@ function getCartList() {
     });
 }
 
-Order_now.addEventListener('click',()=>{
-  let reqObj={
-    cart_id_list:cart_id_list,
-    address:{ address: billing_address.value.trim() }
+Order_now.addEventListener("click", () => {
+  if (billing_address.value.trim() != "") {
+    let reqObj = {
+      cart_id_list: cart_id_list,
+      address: { address: billing_address.value.trim() },
+    };
+    console.log(reqObj);
+    fetch("/order", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(reqObj),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result["msg"] == "Success") {
+          window.location.href = "/orderHistory";
+        } else {
+          alert("can't Place Order");
+        }
+        console.log(result);
+      });
+  } else {
+    alert("Please Fill the Address");
   }
-  console.log(reqObj);
-  fetch("/order", {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json;charset=utf-8",
-    },
-    body: JSON.stringify(reqObj),
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      console.log(result);
-    });
-})
+});
 
 function createCartItem(cartItem) {
+  const status = cartItem.quantity <= cartItem.stock;
+
   total_amount += cartItem.quantity * cartItem.price;
 
   total_amount_tag.innerHTML = `Rs.${total_amount}/-`;
@@ -182,24 +193,38 @@ function createCartItem(cartItem) {
   div2.appendChild(buyNow);
 
   buyNow.addEventListener("click", () => {
-    let reqObj={
-      cart_id_list:[cartItem.cid],
-      address:{ address: billing_address.value.trim() }
+    if (billing_address.value.trim() != "") {
+      let reqObj = {
+        cart_id_list: [cartItem.cid],
+        address: { address: billing_address.value.trim() },
+      };
+      console.log(reqObj);
+      fetch("/order", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(reqObj),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result["msg"] == "Success") {
+            window.location.href = "/orderHistory";
+          } else {
+            alert("can't Place Order");
+          }
+          console.log(result);
+        });
+    } else {
+      alert("Please Fill the Address");
     }
-    console.log(reqObj);
-    fetch("/order", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(reqObj),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if(result[''])
-        console.log(result);
-      });
   });
+
+  const err = document.createElement("span");
+  err.classList.add("err_msg");
+  err.innerHTML = "Out of Stock";
+  console.log(status);
+  if (!status) div2.appendChild(err);
 
   cartItemBox.appendChild(productsImg);
   cartItemBox.appendChild(div1);

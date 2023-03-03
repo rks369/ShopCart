@@ -4,6 +4,14 @@ const product_price = document.getElementById("price");
 const product_stock = document.getElementById("stock");
 const product_image = document.getElementById("image");
 
+const popup = document.getElementById("popup");
+const order_items_list = document.getElementById("order_items_list");
+
+popup.addEventListener("click", () => {
+  order_items_list.innerHTML = "";
+  popup.style["display"] = "none";
+});
+
 let productsList = document.getElementById("productsList");
 
 const err_msg = document.getElementById("error_msg");
@@ -96,7 +104,6 @@ addProductBtn.addEventListener("click", () => {
         .then((result) => {
           console.log(result);
           if (result["data"] == "Done") {
-            
             product_name.value = "";
             product_description.value = "";
             product_price.value = "";
@@ -170,7 +177,7 @@ function createProductUI(product) {
 
   const stock = document.createElement("p");
   stock.classList.add("product_stock");
-  stock.innerHTML = product.stock;
+  stock.innerHTML = `Stocks : ${product.stock}`;
 
   const div2 = document.createElement("div");
 
@@ -215,6 +222,29 @@ function createProductUI(product) {
       });
   });
 
+  const orders = document.createElement("button");
+  orders.classList.add("primaryButton");
+  orders.innerHTML = "Orders";
+  div2.appendChild(orders);
+
+  orders.addEventListener("click", () => {
+    popup.style["display"] = "block";
+    fetch("/seller/productOrders", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({ product_id: product.pid }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        result["data"].forEach((orderDetails) => {
+          createOrderDetailsTile(orderDetails);
+        });
+      });
+  });
+
   productUI.appendChild(productImg);
   productUI.appendChild(div1);
   productUI.appendChild(description);
@@ -223,4 +253,31 @@ function createProductUI(product) {
   productUI.appendChild(document.createElement("br"));
 
   productsList.appendChild(productUI);
+}
+
+function createOrderDetailsTile(orderDetails) {
+  const orderrow = document.createElement("tr");
+
+  const rowValue1 = document.createElement("td")
+  rowValue1.innerHTML = orderDetails.name;
+  orderrow.appendChild(rowValue1);
+
+  const rowValue2 = document.createElement("td")
+  rowValue2.innerHTML = orderDetails.quantity;
+  orderrow.appendChild(rowValue2);
+
+  const rowValue3 = document.createElement("td")
+  rowValue3.innerHTML = JSON.parse(orderDetails.billing_address)['address'];
+  orderrow.appendChild(rowValue3);
+
+  const rowValue4 = document.createElement("td")
+  rowValue4.innerHTML = new Date(orderDetails.order_time).toLocaleDateString();
+  orderrow.appendChild(rowValue4);
+
+  let status = JSON.parse(orderDetails.activity)
+  const rowValue5 = document.createElement("td")
+  rowValue5.innerHTML = status[status.length-1]['title'];
+  orderrow.appendChild(rowValue5);
+  
+  order_items_list.appendChild(orderrow);
 }

@@ -106,20 +106,41 @@ router.route("/changeStatus").post((req, res) => {
   });
 });
 
-router.route("/editProduct").post(upload.single("image"),(req, res) => {
-let img =req.file!=null?req.file.filename:req.body.image_url;
+router.route("/editProduct").post(upload.single("image"), (req, res) => {
+  let img = req.file != null ? req.file.filename : req.body.image_url;
   let product = {
     pid: req.body.pid,
     title: req.body.title,
     description: req.body.description,
     stock: req.body.stock,
     price: req.body.price,
-    image:img ,
+    image: img,
   };
-  console.log(product,req.file!=null);
+  console.log(product, req.file != null);
   dataSource.seller.editProduct(product, (msg) => {
     res.json(msg);
   });
 });
+
+router.route("/productOrders").post((req, res) => {
+  const product_id = req.body.product_id;
+  dataSource.seller.productOrders(product_id, (msg) => {
+    res.json(msg);
+  });
+});
+
+router
+  .route("/allOrders")
+  .get((req, res) => {
+    res.render("seller/product_orders", { name: req.session.name });
+  })
+  .post((req, res) => {
+    const seller_id = req.session.uid;
+    const current_index = req.body.current_index;
+    const row_count = req.body.row_count;
+    dataSource.seller.allOrders(seller_id, current_index, row_count, (msg) => {
+      res.json(msg);
+    });
+  });
 
 module.exports = router;

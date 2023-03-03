@@ -341,4 +341,18 @@ nav ul {
   padding: 1rem;
 }
 
+#order_items_card{
+  padding: 12px;
+  background-color: white;
+  margin: 2rem 8rem;
+  border-radius: 1rem;
+  border: 1px var(--primary-color) solid;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
+
+#order_items_card div {
+  width: 620px;
+}

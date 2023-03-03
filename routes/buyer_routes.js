@@ -192,8 +192,8 @@ router.route("/decreaseQuantity").post((req, res) => {
 });
 
 router.route("/order").post((req, res) => {
-  console.log(req.body)
-  const user_id =req.session.uid;
+  console.log(req.body);
+  const user_id = req.session.uid;
   const billing_address = req.body.address;
   const cart_id_list = req.body.cart_id_list;
 
@@ -205,6 +205,24 @@ router.route("/order").post((req, res) => {
       res.json(msg);
     }
   );
+});
+
+router.route("/orderHistory").get((req, res) => {
+  res.render("buyer/order_history", { name: req.session.name });
+});
+
+router.route("/orderHistoryList").get((req, res) => {
+  // const user_id = req.session.uid;
+  dataSource.user.orderHistory(10, (msg) => {
+    res.json(msg);
+  });
+});
+
+router.route("/orderDetails").post((req, res) => {
+  const order_id = req.body.order_id;
+  dataSource.user.orderDetails(order_id, (msg) => {
+    res.json(msg);
+  });
 });
 
 router.route("/logout").get(authCheck, (req, res) => {

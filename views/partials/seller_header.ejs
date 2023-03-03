@@ -1,5 +1,3 @@
-
-
 <nav>
   <a class="heading" href="./">🛒ShopCart Seller</a>
   <% if(name==null){ %>
@@ -16,14 +14,12 @@
 
     <% }else{ %>
 
-      <ul>
+      <ul>  
 
-        <a class="nav_item " href="/">
+        <a class="nav_item " href="./">
           <%= name %>
         </a>
-
-      
-
+        <a class="nav_item" href="./allOrders"> Orders</a>
         <a class="nav_item" href="/changePassword"> Change Password </a>
         <a class="nav_item" href="/logout">Logout</a>
 

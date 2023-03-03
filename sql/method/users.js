@@ -112,15 +112,33 @@ usersMethods = {
   orderProduct: async (user_id,cart_id_list, billing_address, callback) => {
     try{
      const result= await sql.executeTransaction(user_id,cart_id_list, billing_address)
-      callback({data:result})
+      callback(result)
     }catch(err)
     {
-      console.log(err)
       callback({err:err});
     }
   },
 
+  orderHistory:async(user_id,callback)=>{
+    try{
+      const result= await sql.executeQuery(`SELECT * FROM orders WHERE user_id ='${user_id}' order  by order_time DESC`)
+       callback({data:result})
+     }catch(err)
+     {
+       callback({err:err});
+     }
+  },
 
-};
+  orderDetails:async(order_id,callback)=>{
+    try{
+      const result  = await sql.executeQuery(`
+      SELECT * FROM orderitem JOIN products ON pid = product_id where order_id = ${order_id}`);
+      callback({data:result});
+    }catch(err){
+      callback({err:err});
+    }
+  }
+
+};  
 
 module.exports = usersMethods;
