@@ -74,7 +74,9 @@ function addToCart(id) {
       .then((result) => {
         if (result["err"]) {
           alert("Something Went Wrong");
-        } else {
+        } else if(result['data']=='Not Login'){
+          window.location.href='./login'
+        }else {
           p.innerHTML = "Remove From Cart";
         }
         console.log(result);

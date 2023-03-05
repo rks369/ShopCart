@@ -161,7 +161,7 @@ router.route("/cartItems").get((req, res) => {
   });
 });
 
-router.route("/addToCart").post((req, res) => {
+router.route("/addToCart").post(authCheck,(req, res) => {
   const pid = req.body.pid;
   const uid = req.session.uid;
   dataSource.user.addToCart(uid, pid, (msg) => {

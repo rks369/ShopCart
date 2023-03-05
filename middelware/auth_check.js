@@ -10,7 +10,7 @@ function authCheck(req, res, next) {
         }
     }
     else {
-        res.redirect("/login");
+        res.json({data:"Not Login"});
     }
 }
 

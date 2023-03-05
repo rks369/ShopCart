@@ -104,6 +104,7 @@ addProductBtn.addEventListener("click", () => {
         .then((result) => {
           console.log(result);
           if (result["data"] == "Done") {
+            window.location.reload();
             product_name.value = "";
             product_description.value = "";
             product_price.value = "";
