@@ -143,4 +143,11 @@ router
     });
   });
 
+  router.route('/updateStatus').post((req,res)=>{
+    const order_item_id = req.body.order_item_id;
+    const status = req.body.status;
+    dataSource.seller.updateStatus(order_item_id,status,(msg)=>{
+      res.json(msg);
+    })
+  })
 module.exports = router;

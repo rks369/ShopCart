@@ -60,6 +60,16 @@ const seller = {
     {
       callback({err:err})
     }
+  },
+  updateStatus :async (order_item_id,status,callback)=>{
+    try{
+    
+      await sql.executeQuery(`UPDATE  orderitem SET activity ='${JSON.stringify(status)}' WHERE order_item_id =${order_item_id}`);
+      callback({data:"Done"});
+    }catch(err){
+      console.log(err);
+      callback({err:err});
+    }
   }
 };
 

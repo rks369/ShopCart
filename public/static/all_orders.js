@@ -6,10 +6,9 @@ const row_count = 10;
 getOrderDetails();
 
 load_more_orders.addEventListener("click", () => {
- if(!order_finished)
- {
+  if (!order_finished) {
     getOrderDetails();
- }
+  }
 });
 
 function getOrderDetails() {
@@ -24,12 +23,11 @@ function getOrderDetails() {
     .then((result) => {
       current_index += row_count;
       console.log(result);
-      if(result['data'].length==0)
-      {
-        order_finished=true;
-        load_more_orders.innerHTML="No More Orders";
+      if (result["data"].length == 0) {
+        order_finished = true;
+        load_more_orders.innerHTML = "No More Orders";
         load_more_orders.classList.remove("primaryButton");
-        load_more_orders.classList.add("secondaryButton")
+        load_more_orders.classList.add("secondaryButton");
       }
       result["data"].forEach((orderDetails) => {
         createOrderDetailsTile(orderDetails);
@@ -65,9 +63,71 @@ function createOrderDetailsTile(orderDetails) {
   orderrow.appendChild(orderTime);
 
   let status = JSON.parse(orderDetails.activity);
-  const rowValue5 = document.createElement("td");
-  rowValue5.innerHTML = status[status.length - 1]["title"];
-  orderrow.appendChild(rowValue5);
+  const statusBox = document.createElement("td");
+
+  let ooderHistoryList = document.createElement("ul");
+
+  status.forEach((activity) => {
+    let li = document.createElement("li");
+    li.innerHTML =
+      activity.title +
+      "\n" +
+      new Date(activity.time).toLocaleDateString() +
+      new Date(activity.time).toLocaleTimeString();
+    ooderHistoryList.appendChild(li);
+  });
+
+  const updateInput = document.createElement("input");
+
+  updateInput.addEventListener("keyup", (event) => {
+    if (event.key == "Enter") {
+      if (updateInput.value.trim() == "") {
+        alert("Please Enter The Valid Value");
+      } else {
+        let newStatus = {
+          title: updateInput.value.trim(),
+          time: Date.now(),
+        };
+        status.push(newStatus);
+        console.log(status);
+
+        fetch("/seller/updateStatus", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify({
+            order_item_id: orderDetails.order_item_id,
+            status: status,
+          }),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            console.log(result);
+            if (result["err"]) {
+              status.remove(newStatus);
+            } else {
+              let li = document.createElement("li");
+              let t = Date.now();
+
+              li.innerHTML =
+                updateInput.value.trim() +
+                "\n" +
+                new Date(t).toLocaleDateString() +
+                new Date(t).toLocaleTimeString();
+              ooderHistoryList.appendChild(li);
+            }
+            updateInput.value = "";
+          });
+      }
+    }
+  });
+
+  statusBox.appendChild(ooderHistoryList);
+
+  statusBox.appendChild(updateInput);
+
+  orderrow.appendChild(statusBox);
 
   order_items_list.appendChild(orderrow);
 }
