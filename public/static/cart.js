@@ -179,7 +179,9 @@ function createCartItem(cartItem) {
           alert("Something Went Wrong");
         } else {
           cart_items.removeChild(cartItemBox);
-
+          cart_id_list = cart_id_list.filter((id)=>{
+            return id!=cartItem.cid;
+          })
           total_amount -= cartItem.price * cartItem.quantity;
 
           total_amount_tag.innerHTML = `Rs.${total_amount}/-`;
